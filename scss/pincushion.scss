@@ -1,0 +1,97 @@
+@mixin roundedBorder($radius) {
+    -webkit-border-radius: $radius;
+       -moz-border-radius: $radius;
+            border-radius: $radius;
+
+    /** prevents bg color from leaking outside border; */
+    -webkit-background-clip: padding-box;
+       -moz-background-clip: padding;
+           -background-clip: padding-box;
+}    
+
+@mixin backgroundGradient($topColor, $stop1, $stop2, $bottomColor) {
+    background: $topColor;
+    background: -moz-linear-gradient(top,  $topColor 0%, $stop1 50%, $stop2 51%, $bottomColor 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$topColor), color-stop(50%,$stop1), color-stop(51%,$stop2), color-stop(100%,$bottomColor));
+    background: -webkit-linear-gradient(top,  $topColor 0%,$stop1 50%,$stop2 51%,$bottomColor 100%);
+    background: -o-linear-gradient(top, $topColor 0%,$stop1 50%,$stop2 51%,$bottomColor 100%);
+    background: -ms-linear-gradient(top, $topColor 0%,$stop1 50%,$stop2 51%,$bottomColor 100%);
+    background: linear-gradient(top, $topColor 0%,$stop1 50%,$stop2 51%,$bottomColor 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#{$topColor}, endColorstr=#{$bottomColor},GradientType=0 );
+}
+
+@mixin transition($prop, $duration, $easing) {
+            transition: $prop $duration $easing;
+    -webkit-transition: $prop $duration $easing;
+       -moz-transition: $prop $duration $easing;
+}
+
+@mixin boxShadow($x, $y, $width, $color) {
+    box-shadow: $x $y $width $color;
+    -webkit-box-shadow: $x $y $width $color;
+    -moz-box-shadow: $x $y $width $color; 
+}
+
+.pin-cushion {
+    @include roundedBorder(2px);
+    border: 1px solid #ccc;
+    margin: 0.25em;
+    padding: 6px 0 2px 6px;
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display:inline-block;
+
+        li {
+            display: inline-block;
+            margin: 0 4px 4px 0;
+            font-size: 0.65rem;
+        }
+        
+        .pin {
+            @include roundedBorder(15px);
+            border: 1px solid #ccc;
+            @include backgroundGradient(#f4f4f4, #f4f4f4, #e9e9e7, #e2e2e2);
+            padding: 5px 10px;
+            cursor: pointer;
+            @inclide backgroundGradient(#fff, #fff);
+            @include transition(all, 0.1s, ease-in-out);
+
+            .remove { 
+                visibility: hidden;
+            }
+            &.required {
+                cursor: not-allowed;
+                color: #555;
+                border-color: #ccc;
+                background: #e8e8e4;
+            }
+            &.selected {
+                outline: none;
+                border-color: #666;
+                @include transition(all, 0.1s, ease-in-out);
+                @include boxShadow(0, 0, 5px, rgba(98, 182, 234, 1));
+                    
+                .remove { 
+                    visibility: visible;
+                }
+            }
+
+        }
+
+        li.pin-search {
+            input {
+                border: none;
+                width: 40px;
+                
+                &:focus { 
+                    outline:none;
+                    border: none;
+                }
+            }
+        }
+
+    }
+}
