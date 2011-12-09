@@ -78,7 +78,7 @@ var context = this;
             this.pins = new ps.PinList(this.options.initialPins);
 
             this.pins.bind('add', this.refresh, this);
-            this.pins.bind('change', this.refresh, this);
+            this.pins.bind('change:pinned', this.refresh, this);
 
             this.refresh();
         },
