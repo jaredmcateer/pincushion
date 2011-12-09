@@ -61,6 +61,8 @@
 
             .remove { 
                 visibility: hidden;
+                text-decoration: none;
+                color: #666;
             }
             &.required {
                 cursor: not-allowed;

@@ -42,7 +42,9 @@
       -webkit-transition: all 0.1s ease-in-out;
       -moz-transition: all 0.1s ease-in-out; }
       .pin-cushion ul .pin .remove {
-        visibility: hidden; }
+        visibility: hidden;
+        text-decoration: none;
+        color: #666; }
       .pin-cushion ul .pin.required {
         cursor: not-allowed;
         color: #555;

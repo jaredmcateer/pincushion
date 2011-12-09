@@ -42,7 +42,7 @@ var context = this;
             this.$('.pin-label').text(text);
         }, 
         removePin: function () {
-            this.set('pinned', false);
+            this.model.set({'pinned': false});
             $(this.el).remove();
         },
         selectPin: function (e) {
@@ -52,9 +52,9 @@ var context = this;
                 $(this.el).toggleClass('selected');   
 
                 if (!this.model.get('selected')) {
-                    this.model.set('selected', true);
+                    this.model.set({'selected': true});
                 } else {
-                    this.model.set('selected', false);
+                    this.model.set({'selected': false});
                 }
             }
         }
@@ -73,21 +73,37 @@ var context = this;
             }
             this.pins = new ps.PinList(this.options.initialPins);
 
-            this.pins.bind('add', this.addPin, this);
-            this.pins.bind('change:pinned', this.addPin, this);
+            this.pins.bind('add', this.refresh, this);
+            this.pins.bind('change', this.refresh, this);
 
-            $(this.el).append(this.template({
-                id: this.id
-            }));
+            this.refresh();
+        },
+
+        refresh: function() {
+            var template = this.template({id: this.id}),
+                cushion = $('#' + this.id);
+
+            if (cushion.length > 0) {
+                cushion.replaceWith(template);
+            } else {
+                $(this.el).append(this.template({
+                    id: this.id
+                }));
+            }
             this.input = this.$('.pin-search input');
             this.render();
         },
 
         addPin: function (pin) {
-            var pinview;
+            var pinview,
+                pinEl;
 
             if (pin.get('pinned') === true) {
                 pinview = new ps.PinView({model: pin});
+                pinEl = pinview.render().el;
+                if (pin.get('selected')) {
+                    $(pinEl).addClass('selected');
+                }
                 this.$('.pin-list .pin-search').before(pinview.render().el);
             }
         },
@@ -105,7 +121,11 @@ var context = this;
                 return;
             }
 
-            this.pins.add([{label: text, pinned: true}]);
+            _(this.pins.models).each(function (pin) {
+                if (pin.get('label').toLowerCase() === text.toLowerCase()) {
+                    pin.set({'pinned': true}); 
+                }
+            });
 
             this.input.val('');
         },
