@@ -45,9 +45,12 @@ var context = this;
             var text = this.model.get('text');
             this.$('.pin-label').text(text);
         }, 
-        removePin: function () {
+        removePin: function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             this.model.set({'pinned': false});
             $(this.el).remove();
+            return false;
         },
         selectPin: function (e) {
             e.stopPropagation();

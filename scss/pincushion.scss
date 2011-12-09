@@ -6,7 +6,7 @@
     /** prevents bg color from leaking outside border; */
     -webkit-background-clip: padding-box;
        -moz-background-clip: padding;
-           -background-clip: padding-box;
+            background-clip: padding-box;
 }    
 
 @mixin backgroundGradient($topColor, $stop1, $stop2, $bottomColor) {
@@ -21,15 +21,15 @@
 }
 
 @mixin transition($prop, $duration, $easing) {
-            transition: $prop $duration $easing;
     -webkit-transition: $prop $duration $easing;
        -moz-transition: $prop $duration $easing;
+            transition: $prop $duration $easing;
 }
 
 @mixin boxShadow($x, $y, $width, $color) {
-    box-shadow: $x $y $width $color;
     -webkit-box-shadow: $x $y $width $color;
-    -moz-box-shadow: $x $y $width $color; 
+       -moz-box-shadow: $x $y $width $color; 
+            box-shadow: $x $y $width $color;
 }
 
 .pin-cushion {
@@ -62,7 +62,6 @@
             .remove { 
                 visibility: hidden;
                 text-decoration: none;
-                color: #666;
             }
             &.required {
                 cursor: not-allowed;
@@ -77,7 +76,12 @@
                 @include boxShadow(0, 0, 5px, rgba(98, 182, 234, 1));
                     
                 .remove { 
+                    color: #666;
                     visibility: visible;
+                    &:hover {
+                        color: #f00;
+                        @include transition(all, 0.5s, ease-in);
+                    }
                 }
             }
 

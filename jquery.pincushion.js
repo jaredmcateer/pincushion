@@ -9,7 +9,8 @@
     $.pinCushion = function (options) {
         var data = [],
             itemList,
-            el = options.element;
+            el = options.element,
+            state;
                 
         if (!options.id && !el) {
             options.id = _.uniqueId('cushion-');
@@ -24,11 +25,12 @@
             options.parent = el.parent();
             _(el.find('option')).each(function(item) {
                 item = $(item);
+                state = item.attr('data-state');
                 data.push({
                     value: item.val(),
                     label: item.text(),
-                    required: item.hasClass('required'),
-                    pinned: item.hasClass('required') || item.hasClass('pinned')
+                    required: (state === 'required'),
+                    pinned: (state  === 'required' || state === 'pinned')
                 });
             });
         }
