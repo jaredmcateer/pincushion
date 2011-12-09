@@ -34,6 +34,10 @@ var context = this;
                 $(this.el).addClass('required');
             }
 
+            if (this.model.get('selected')) {
+                $(this.el).addClass('selected');
+            }
+
             this.setText();
             return this;
         },
@@ -100,10 +104,6 @@ var context = this;
 
             if (pin.get('pinned') === true) {
                 pinview = new ps.PinView({model: pin});
-                pinEl = pinview.render().el;
-                if (pin.get('selected')) {
-                    $(pinEl).addClass('selected');
-                }
                 this.$('.pin-list .pin-search').before(pinview.render().el);
             }
         },
