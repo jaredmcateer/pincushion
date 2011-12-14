@@ -19,6 +19,9 @@
       margin: 0 4px 4px 0;
       font-size: 0.65rem; }
     .pin-cushion ul .pin {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      cursor: pointer;
       -webkit-border-radius: 15px;
       -moz-border-radius: 15px;
       border-radius: 15px;
@@ -26,7 +29,6 @@
       -webkit-background-clip: padding-box;
       -moz-background-clip: padding;
       background-clip: padding-box;
-      border: 1px solid #ccc;
       background: #f4f4f4;
       background: -moz-linear-gradient(top, #f4f4f4 0%, #f4f4f4 50%, #e9e9e7 51%, #e2e2e2 100%);
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f4f4f4), color-stop(50%, #f4f4f4), color-stop(51%, #e9e9e7), color-stop(100%, #e2e2e2));
@@ -35,9 +37,6 @@
       background: -ms-linear-gradient(top, #f4f4f4 0%, #f4f4f4 50%, #e9e9e7 51%, #e2e2e2 100%);
       background: linear-gradient(top, #f4f4f4 0%, #f4f4f4 50%, #e9e9e7 51%, #e2e2e2 100%);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f4f4f4, endColorstr=#e2e2e2,GradientType=0 );
-      padding: 5px 10px;
-      cursor: pointer;
-@inclide backgroundGradient(#fff, #fff);
       -webkit-transition: all 0.1s ease-in-out;
       -moz-transition: all 0.1s ease-in-out;
       transition: all 0.1s ease-in-out; }
@@ -68,7 +67,7 @@
             transition: all 0.5s ease-in; }
     .pin-cushion ul li.pin-search input {
       border: none;
-      width: 40px; }
+      width: 80px; }
       .pin-cushion ul li.pin-search input:focus {
         outline: none;
         border: none; }

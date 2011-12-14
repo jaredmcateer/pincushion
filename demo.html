@@ -25,39 +25,7 @@
     </select>
     <h2>Blah!</h2>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-    <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.js"><\/script>')</script>
 
-    <script type="text/template" id="pin-template">
-        <span class="pin-label"><%= label %></span>
-        <% if (!required) { %>
-        <a href="#" class="remove">✖</a>
-        <% } %>
-    </script>
-    <script type="text/template" id="pin-cushion-template">
-        <div class="pin-cushion" id="<%= id ? id : '' %>">
-            <ul class="pin-list">
-                <li class='pin-search'><input type='text' value='' /></li> 
-            </ul>
-            
-        </div>
-    </script>
-
-    <script src="vendor/underscore-1.2.2.js"></script>
-    <script src="vendor/backbone.js"></script>
-    <script src="pincushion.js"></script>
-    <script src="jquery.pincushion.js"></script>
-
-    <script>
-        $(function() {
-            $('#test').pinCushion();
-           /* window.app = new PINC.CushionView({id: 'test', el: $('#testArea'), initialPins: [
-                {label: 'Required 1', required: true},
-                {label: 'Optional 1', required: false},
-                {label: 'Required 2', required: true}
-            ]});
-        */
-        });
-    </script>
+    <script data-main="js/main.js" src="js/vendor/require/require.js"></script>
 </body>
 </html>

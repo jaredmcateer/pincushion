@@ -1,11 +1,30 @@
-(function ($, _) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD, Register as an anonymous module
+        define(['jquery', 'underscore', 'pincushion/widget'], factory);
+    } else {
+        // Browser Globals
+        factory(jQuery, _, root.PINCUSHION);
+    }
+}(this, function ($, _, pincushion) {
     'use strict';
+
+    /**
+     * Element plugin
+     *
+     * e.g., $('select').pinCushion();
+     */
     $.fn.pinCushion = function () {
         this.each(function () {
             $.pinCushion({element: $(this)});
         });
     };
 
+    /**
+     * $ Function extension
+     *
+     * e.g., $.pinCushion({element: $('#someSelectEl').get(0)});
+     */
     $.pinCushion = function (options) {
         var data = [],
             itemList,
@@ -20,7 +39,7 @@
             options.parent = $('body');
         }
 
-        if (!options.data && el instanceof jQuery) {
+        if (!options.data && el instanceof $) {
             options.id = 'cushion-' + el.attr('id');
             options.parent = el.parent();
             _(el.find('option')).each(function(item) {
@@ -35,10 +54,11 @@
             });
         }
 
-        var obj = new PINC.CushionView({id: options.id, el: options.parent, initialPins: data});
+        pincushion.view.Cushion({id: options.id, el: options.parent, initialPins: data});
 
-        if (el instanceof jQuery) {
+        // Replace select element with pin cushion
+        if (el instanceof $) {
             el.replaceWith($('#' + options.id));
         }
     };
-}(jQuery, _));
+}));
