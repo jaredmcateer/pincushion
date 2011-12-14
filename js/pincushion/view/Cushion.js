@@ -40,10 +40,10 @@
             this.pins.bind('add', this.refresh, this);
             this.pins.bind('change:pinned', this.refresh, this);
 
-            this.refresh();
+            this.render();
         },
 
-        refresh: function() {
+        render: function() {
             var template = this.template({id: this.id}),
                 cushion = $('#' + this.id);
 
@@ -54,8 +54,12 @@
                     id: this.id
                 }));
             }
+
             this.input = this.$('.pin-search input');
-            this.render();
+
+            _(this.pins.models).each(_(function(pin) {
+                this.addPin(pin);
+            }).bind(this));
         },
 
         addPin: function (pin) {
@@ -68,10 +72,9 @@
             }
         },
 
-        render: function () {
-            _(this.pins.models).each(_(function(pin) {
-                this.addPin(pin);
-            }).bind(this));
+        refresh: function () {
+            this.render();
+            this.focusSearch();
         },
 
         addPinOnEnter: function (e) {
@@ -91,7 +94,6 @@
         },
 
         focusSearch: function (e) {
-
             this.input.focus();
         }
     });

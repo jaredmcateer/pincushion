@@ -49,7 +49,7 @@
         removePin: function (e) {
             e.stopPropagation();
             e.stopImmediatePropagation();
-            this.model.set({'pinned': false});
+            this.model.set({'selected': false, 'pinned': false});
             $(this.el).remove();
             return false;
         },
