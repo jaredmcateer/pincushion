@@ -9,6 +9,7 @@
 
     } else {
         root.PINCUSHION = factory(root.PinModel, root.PinCollection, root.PinView, root.CushionView);
+        root.PINCUSHION.baseUrl = '/js/';
     }
 
 }(this, function (PinModel, PinCollection, PinView, CushionView) {

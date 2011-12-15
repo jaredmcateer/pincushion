@@ -11,6 +11,12 @@ require([
 ], function () {
     $(function() {
         $('#test').pinCushion();
+
+        $.pinCushion({data: [
+             {label: 'label 1', value: 1, required: false, pinned: false},
+             {label: 'label 2', value: 'test', required: true, pinned: true},
+             {label: 'label 3', value: false, required: false, pinned: true}
+        ]});
     });
 });
 

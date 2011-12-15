@@ -24,6 +24,15 @@
      * $ Function extension
      *
      * e.g., $.pinCushion({element: $('#someSelectEl').get(0)});
+     * or    $.pinCushion({
+     *          parent: $('body'),
+     *          data: [
+     *              {label: 'label 1', value: 1, required: false, pinned: false},
+     *              {label: 'label 2', value: 'test', required: true, pinned: false},
+     *              {label: 'label 3', value: false, required: false, pinned: true},
+     *              ...
+     *          ]
+     *       });
      */
     $.pinCushion = function (options) {
         var data = [],
@@ -52,9 +61,11 @@
                     pinned: (state  === 'required' || state === 'pinned')
                 });
             });
+
+            options.data = data;
         }
 
-        pincushion.view.Cushion({id: options.id, el: options.parent, initialPins: data});
+        pincushion.view.Cushion({id: options.id, initialPins: options.data, parentEl: options.parent});
 
         // Replace select element with pin cushion
         if (el instanceof $) {

@@ -65,9 +65,26 @@
             -webkit-transition: all 0.5s ease-in;
             -moz-transition: all 0.5s ease-in;
             transition: all 0.5s ease-in; }
-    .pin-cushion ul li.pin-search input {
+    .pin-cushion ul li.pin-completer input {
       border: none;
       width: 80px; }
-      .pin-cushion ul li.pin-search input:focus {
+      .pin-cushion ul li.pin-completer input:focus {
         outline: none;
         border: none; }
+    .pin-cushion ul li.pin-completer .pin-completer-list {
+      position: absolute;
+      margin-top: 0.25em;
+      padding: 1em;
+      border: 1px solid #ccc;
+      background-color: white;
+      -webkit-box-shadow: 2px 2px 3px #a6a6a6;
+      -moz-box-shadow: 2px 2px 3px #a6a6a6;
+      box-shadow: 2px 2px 3px #a6a6a6; }
+      .pin-cushion ul li.pin-completer .pin-completer-list li {
+        display: block;
+        float: none;
+        cursor: pointer; }
+      .pin-cushion ul li.pin-completer .pin-completer-list .matchedText {
+        color: #008595; }
+      .pin-cushion ul li.pin-completer .pin-completer-list .currentSelection {
+        background-color: #efefef; }

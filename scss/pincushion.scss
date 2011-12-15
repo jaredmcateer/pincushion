@@ -85,7 +85,7 @@
             }
         }
 
-        li.pin-search {
+        li.pin-completer {
             input {
                 border: none;
                 width: 80px;
@@ -93,6 +93,28 @@
                 &:focus { 
                     outline:none;
                     border: none;
+                }
+            }
+
+            .pin-completer-list {
+                position: absolute;
+                margin-top: 0.25em;
+                padding: 1em;
+                border: 1px solid #ccc;
+                background-color:white;
+                @include boxShadow(2px, 2px, 3px, #a6a6a6);
+
+                li {
+                    display: block;
+                    float: none;
+                    cursor: pointer;
+                }
+                .matchedText { 
+                    color: rgba(0, 133, 149, 1);
+                }
+                
+                .currentSelection {
+                    background-color: #efefef;
                 }
             }
         }

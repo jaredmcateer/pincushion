@@ -3,6 +3,7 @@
         define([
                'pincushion/collection/Pin', 
                'pincushion/view/Pin', 
+               'pincushion/view/PinCompleter', 
                'text!pincushion/templates/cushion.html',
                'jquery', 
                'underscore', 
@@ -13,22 +14,23 @@
             pc = root.PINCUSHION;
 
         $.ajax({
-            url: 'pincushion/templates/cushion.html',
+            url: root.PINCUSHION.BaseUrl + 'pincushion/templates/cushion.html',
             asynx: false,
             success: function (response) {
                 cushionTemplate = response;
             }
         });
 
-        root.PinView = factory(pc.collection.Pin, pc.view.Pin, cushionTemplate, $, _, Backbone);
+        root.PinView = factory(pc.collection.Pin, pc.view.Pin, pc.view.PinCompleter, cushionTemplate, $, _, Backbone);
     }
     
-}(this, function (PinCollection, PinView, cushionTemplate, $, _, Backbone) {
+}(this, function (PinCollection, PinView, PinCompleterView, cushionTemplate, $, _, Backbone) {
+    'use strict';
     return Backbone.View.extend({
         template: _(cushionTemplate).template(),
+        className: 'pin-cushion',
         events: {
-            'click .pin-cushion': 'focusSearch',
-            'keypress .pin-search': 'addPinOnEnter'
+            'click': 'focusSearch'
         },
 
         initialize: function () {
@@ -40,22 +42,22 @@
             this.pins.bind('add', this.refresh, this);
             this.pins.bind('change:pinned', this.refresh, this);
 
+            this.parent = this.options.parentEl;
+
             this.render();
         },
 
         render: function() {
             var template = this.template({id: this.id}),
-                cushion = $('#' + this.id);
+                completerView = new PinCompleterView({pins: this.pins});
 
-            if (cushion.length > 0) {
-                cushion.replaceWith(template);
-            } else {
-                $(this.el).append(this.template({
-                    id: this.id
-                }));
+            $(this.el).html(this.template({ id: this.id }));
+            
+            if ($('#' + this.id).length <= 0) {
+                this.parent.append(this.el);
             }
 
-            this.input = this.$('.pin-search input');
+            this.$('ul').append(completerView.el);
 
             _(this.pins.models).each(_(function(pin) {
                 this.addPin(pin);
@@ -68,7 +70,7 @@
 
             if (pin.get('pinned') === true) {
                 pinview = new PinView({model: pin});
-                this.$('.pin-list .pin-search').before(pinview.render().el);
+                this.$('.pin-list .pin-completer').before(pinview.render().el);
             }
         },
 
@@ -77,24 +79,8 @@
             this.focusSearch();
         },
 
-        addPinOnEnter: function (e) {
-            var text = this.input.val();
-
-            if (!text || e.keyCode !== 13) { 
-                return;
-            }
-
-            _(this.pins.models).each(function (pin) {
-                if (pin.get('label').toLowerCase() === text.toLowerCase()) {
-                    pin.set({'pinned': true}); 
-                }
-            });
-
-            this.input.val('');
-        },
-
         focusSearch: function (e) {
-            this.input.focus();
+            this.$('.pin-search').focus();
         }
     });
 }));
