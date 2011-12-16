@@ -18,16 +18,28 @@
         className: 'pin-suggestion',
         events: {
             'click': 'selectSuggestion',
-            'mouseover': 'toggleHighlight',
-            'mouseout': 'toggleHighlight'
+            'mouseover': 'handleMouse',
+            'mouseout': 'handleMouse'
+        },
+
+        initialize: function () {
+            this.selected = false;
         },
 
         selectSuggestion: function () {
             this.model.set({'pinned': true});
         },
 
-        toggleHighlight: function (e) {
+        handleMouse: function (e) {
             if (e.type === 'mouseover') {
+                this.toggleSelected(true);              
+            } else {
+                this.toggleSelected(false);
+            }
+        },
+
+        toggleSelected: function (selected) {
+            if (selected) {
                 $(this.el).addClass('currentSelection')
                           .siblings().removeClass('currentSelection');
             } else {

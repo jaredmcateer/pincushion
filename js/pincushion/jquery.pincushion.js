@@ -65,7 +65,13 @@
             options.data = data;
         }
 
-        pincushion.view.Cushion({id: options.id, initialPins: options.data, parentEl: options.parent});
+        pincushion.view.Cushion({
+            id: options.id, 
+            initialPins: options.data, 
+            parentEl: options.parent,
+            addPinHandler: options.callback
+
+        });
 
         // Replace select element with pin cushion
         if (el instanceof $) {

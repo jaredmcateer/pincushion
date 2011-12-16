@@ -39,10 +39,14 @@
         initialize: function () {
             this.pins = this.options.pins;
             this.pins.bind('change:pinned', this.hideCompleter, this);
+
+            this.addPinHandler = options.addPinHandler || this.pinByLabel;
+
             this.render();
         },
 
         render: function () {
+            this.suggestions = [];
             $(this.el).append(this.template());
             this.input = this.$('.pin-search');
         },
@@ -59,17 +63,11 @@
 
         handleEnter: function () {
             var text = this.input.val(),
+                currentSelection = this.$('.currentSelection').val(),
                 foundPin = false,
                 removeClass;
-
-            if (text !== '') { 
-                _(this.pins.models).each(function (pin) {
-                    if (pin.get('label').toLowerCase() === text.toLowerCase()) {
-                        pin.set({'pinned': true}); 
-                        foundPin = true;
-                    }
-                });
-            }
+            
+            foundPin = this.addPinHandler(text, currentSelection);
 
             if (!foundPin) {
                 removeClass = function () {
@@ -84,32 +82,41 @@
             this.input.val('');
         },
 
+        pinLabel: function (label) {
+            _(this.pins.models).each(function (pin) {
+                if (pin.get('label').toLowerCase() === label.toLowerCase()) {
+                    pin.set({'pinned': true}); 
+                    foundPin = true;
+                }
+            });
+
+            return found;
+        },
+
         handleArrows: function (direction) {
             var delta = direction - 39,
                 suggestions = this.$('.pin-suggestion'),
                 currentSelection = this.$('.currentSelection'),
                 index = suggestions.index(currentSelection),
-                newSelection;
+                newSuggestion;
 
             if (index + delta <= 0) {
-                newSelection =  $(suggestions.get(0));
-            } else if (index + delta >= suggestions.length) {
-                newSelection = $(suggestions.get(suggestions.length - 1));
+                this.suggestions[0].toggleSelected(true);
+            } else if (index + delta >= this.suggestions.length) {
+                this.suggestions[suggestions.length - 1].toggleSelected(true);
             } else {
-                newSelection = $(suggestions.get(index + delta));
+                this.suggestions[index + delta].toggleSelected(true);
             }
-
-            currentSelection.removeClass('currentSelection');
-            newSelection.addClass('currentSelection');
         }, 
 
         suggest: function () {
             var text = this.input.val(),
                 completerList = this.$('.pin-completer-list'),
-                addSuggestion = function (suggestion) {
+                addSuggestion = _(function (suggestion) {
                     var suggestView = new SuggestionView({model:suggestion});
-                    completerList.append(suggestView.render(text).el);
-                },
+                    completerList.find('ul').append(suggestView.render(text).el);
+                    this.suggestions.push(suggestView);
+                }).bind(this),
                 suggestions;
 
             if (!text || text.length < 3) { 
@@ -117,7 +124,7 @@
                 return;
             }
 
-            completerList.html('');
+            completerList.html('<ul></ul>');
             
             suggestions = this.filterModels(text);
             if (suggestions.length > 0) {
