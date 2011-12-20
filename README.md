@@ -4,9 +4,11 @@ Pin Cushion is a multi-select widget that gives you a flowing list of objects pi
 
 Pin Cushion uses [Backbone](http://documentcloud.github.com/backbone), [underscore](http://documentcloud.github.com/underscore/), [jQuery](http://jquery.com/) and optionally an AMD library such as [RequireJS](http://requirejs.org/). This version of the widget makes the assumption you're building a webapp for a modern browser and the demo makes heavy use of CSS3 for transitions and effects. This isn't a requirement but it's up to you to make the changes necessary to have it look pretty in older browsers. The CSS is built using [SASS](http://sass-lang.com/) any contributions to the CSS should be done through the `scss` file.
 
-If you're using an AMD such as RequireJS you can simply import `pincushion/widget` into your module and call `whateverYouNamedMe.view.cushion(options);`. If you're not using an AMD then you can access the widget through a global variable `window.PINCUSHION.view.cushion(options);`.
+## Instructions ##
 
-## Options ##
+If you're using an AMD such as RequireJS you can simply define the `pincushion/widget` module in your module and call `yourVar.view.cushion(options);`. If you're not using an AMD then you can access the widget through a global variable `window.PINCUSHION.view.cushion(options);`.
+
+### Options ###
 
 The following options are provided to the widget through the cushion view. All options are optional, all attributes of the objects in the `data` array are mandatory, however.
 
