@@ -86,13 +86,13 @@
             foundPin = this.addPin(text, currentSelection);
 
             if (!foundPin) {
-                removeClass = function () {
-                    $(this).removeClass('inputError');
-                };
+                removeClass = _(function () {
+                    this.input.removeClass('inputError');
+                }).bind(this);
 
-                this.input.addClass('inputError')
-                          .delay(1000)
-                          .queue(removeClass);
+                this.input.addClass('inputError');
+
+                _(removeClass).delay(1000);
             }
 
             this.input.val('');
@@ -169,12 +169,12 @@
 
         hideCompleter: _(function () {
             if (this.$('.pin-completer-list').is(':visible')) {
-                this.$('.pin-completer-list').hide();
+                this.$('.pin-completer-list').removeClass('show');
             }
         }).debounce(250),
 
         showCompleter: function () {
-            this.$('.pin-completer-list').fadeIn(200);
+            this.$('.pin-completer-list').addClass('show');
         }
     });
 }));

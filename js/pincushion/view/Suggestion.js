@@ -9,7 +9,7 @@
     } else {
         var pc = root.PINCUSHION;
 
-        root.PinCompleterView = factory(pc.model.Pin, $, _, Backbone);
+        root.SuggestionView = factory(pc.model.Pin, $, _, Backbone);
     }
 }(this, function (PinModel, $, _ , Backbone) {
     'use strict';

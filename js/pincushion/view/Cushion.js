@@ -42,14 +42,18 @@
             this.pins.bind('add', this.refresh, this);
             this.pins.bind('change:pinned', this.refresh, this);
 
-            this.parent = this.options.parentEl;
+            this.parent = this.options.parentEl || $(document.body);
 
             this.render();
         },
 
         render: function() {
             var template = this.template({id: this.id}),
-                completerView = new PinCompleterView({pins: this.pins, fetchPins: this.options.fetchPins});
+                completerView = new PinCompleterView({
+                    pins: this.pins, 
+                    fetchPins: this.options.fetchPins, 
+                    addPin: this.options.addPin
+                });
 
             $(this.el).html(this.template({ id: this.id }));
             

@@ -50,10 +50,6 @@
             options.id = _.uniqueId('cushion-');
         }
 
-        if (!options.parentEl) {
-            options.parentEl = $('body');
-        }
-
         if (!options.data && el instanceof $) {
             options.id = 'cushion-' + el.attr('id');
             options.parent = el.parent();
@@ -74,8 +70,10 @@
         pincushion.view.Cushion(options);
 
         // Replace select element with pin cushion
-        if (el instanceof $) {
+        if (el instanceof $ && !options.parentEl) {
             el.replaceWith($('#' + options.id));
+        } else {
+            el.remove();
         }
     };
 }));

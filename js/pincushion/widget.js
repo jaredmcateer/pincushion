@@ -4,11 +4,13 @@
             'pincushion/model/Pin',
             'pincushion/collection/Pin',
             'pincushion/view/Pin',
-            'pincushion/view/Cushion'
+            'pincushion/view/Cushion',
+            'pincushion/view/PinCompleter',
+            'pincushion/view/Suggestion'
         ], factory); 
 
     } else {
-        root.PINCUSHION = factory(root.PinModel, root.PinCollection, root.PinView, root.CushionView);
+        root.PINCUSHION = factory(root.PinModel, root.PinCollection, root.PinView, root.CushionView, root.PinCompleterView, root.SuggestionView);
         root.PINCUSHION.baseUrl = '/js/';
     }
 
@@ -30,6 +32,12 @@
             },
             Cushion: function (options) {
                 return new CushionView(options);
+            },
+            PinCompleter: function (options) {
+                return new PinCompleterView(options);
+            },
+            Suggestion: function (options) {
+                return new SuggestionView(options);
             }
         }
     };
