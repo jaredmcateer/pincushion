@@ -6,17 +6,35 @@ require.config({
     }
 });
 require([
+        'underscore',
         'jquery',
         'pincushion/jquery.pincushion'
-], function () {
+], function (_) {
     $(function() {
+        var fetchPins = function () {
+            var matchTerm = this.input.val().substring(0,3).toLowerCase();
+
+            if (matchTerm.length === 3 && !this.cachedSearch[matchTerm]) {
+                $.ajax({ 
+                    url: 'fetchPinsDemo.php',
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {matchTerm: this.input.val()},
+                    success: _.bind(function(data) {
+                        this.cachedSearch[matchTerm] = true;
+                        this.pins.append(data, {silent: true});
+                        this.suggest();
+                    }, this)
+                });
+            } else {
+                this.suggest();
+            }
+        };
+
         $('#test').pinCushion();
 
-        $.pinCushion({data: [
-             {label: 'label 1', value: 1, required: false, pinned: false},
-             {label: 'label 2', value: 'test', required: true, pinned: true},
-             {label: 'label 3', value: false, required: false, pinned: true}
-        ]});
+        $.pinCushion({fetchPins: fetchPins});
+
     });
 });
 

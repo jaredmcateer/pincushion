@@ -37,12 +37,24 @@
         },
 
         initialize: function () {
+            this.cachedSearch = {};
+
             this.pins = this.options.pins;
             this.pins.bind('change:pinned', this.hideCompleter, this);
 
-            this.addPinHandler = options.addPinHandler || this.pinByLabel;
+            if (this.options.fetchPins) { 
+                this.fetchPinsHandler = this.options.fetchPins;
+            }
+
+            if (this.options.addPin) {
+                this.addPin = this.options.addPin;
+            }
 
             this.render();
+        },
+
+        fetchPinsHandler: function () {
+            this.suggest();
         },
 
         render: function () {
@@ -57,17 +69,21 @@
             } else if (e.keyCode === this.KEY_UP || e.keyCode === this.KEY_DOWN) {
                 this.handleArrows(e.keyCode);
             } else {
-                this.suggest();
+                this.handleTextInput(_.bind(this.fetchPinsHandler, this));
             }
         },
 
+        handleTextInput: _.debounce(function (callback) {
+            callback();
+        }, 250),
+
         handleEnter: function () {
             var text = this.input.val(),
-                currentSelection = this.$('.currentSelection').val(),
+                currentSelection = this.$('.currentSelection').text(),
                 foundPin = false,
                 removeClass;
             
-            foundPin = this.addPinHandler(text, currentSelection);
+            foundPin = this.addPin(text, currentSelection);
 
             if (!foundPin) {
                 removeClass = function () {
@@ -82,7 +98,13 @@
             this.input.val('');
         },
 
-        pinLabel: function (label) {
+        addPin: function (label, currentSelection) {
+            var foundPin = false;
+
+            if (currentSelection !== '') {
+                label = currentSelection; 
+            }
+
             _(this.pins.models).each(function (pin) {
                 if (pin.get('label').toLowerCase() === label.toLowerCase()) {
                     pin.set({'pinned': true}); 
@@ -90,7 +112,7 @@
                 }
             });
 
-            return found;
+            return foundPin;
         },
 
         handleArrows: function (direction) {
@@ -119,6 +141,8 @@
                 }).bind(this),
                 suggestions;
 
+            this.suggestions = [];
+
             if (!text || text.length < 3) { 
                 this.hideCompleter();
                 return;
@@ -137,14 +161,17 @@
         },
 
         filterModels: function (text) {
+            text = text.toLowerCase();
             return this.pins.filter(function (pin) {
-                return (pin.get('pinned') === false && pin.get('label').indexOf(text) >= 0);
+                return (pin.get('pinned') === false && pin.get('label').toLowerCase().indexOf(text) >= 0);
             });
         },
 
-        hideCompleter: function () {
-            this.$('.pin-completer-list').hide();
-        },
+        hideCompleter: _(function () {
+            if (this.$('.pin-completer-list').is(':visible')) {
+                this.$('.pin-completer-list').hide();
+            }
+        }).debounce(250),
 
         showCompleter: function () {
             this.$('.pin-completer-list').fadeIn(200);

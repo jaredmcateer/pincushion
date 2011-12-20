@@ -34,10 +34,10 @@
         },
 
         initialize: function () {
-            if (!this.options.initialPins) {
-              this.options.initialPins = [];
+            if (!this.options.data) {
+              this.options.data = [];
             }
-            this.pins = new PinCollection(this.options.initialPins);
+            this.pins = new PinCollection(this.options.data);
 
             this.pins.bind('add', this.refresh, this);
             this.pins.bind('change:pinned', this.refresh, this);
@@ -49,7 +49,7 @@
 
         render: function() {
             var template = this.template({id: this.id}),
-                completerView = new PinCompleterView({pins: this.pins});
+                completerView = new PinCompleterView({pins: this.pins, fetchPins: this.options.fetchPins});
 
             $(this.el).html(this.template({ id: this.id }));
             

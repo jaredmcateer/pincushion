@@ -37,15 +37,21 @@
     $.pinCushion = function (options) {
         var data = [],
             itemList,
-            el = options.element,
+            el,
             state;
-                
+
+        if (!options) {
+            options = {};
+        }
+
+        el = options.element;
+
         if (!options.id && !el) {
             options.id = _.uniqueId('cushion-');
         }
 
-        if (!options.parent) {
-            options.parent = $('body');
+        if (!options.parentEl) {
+            options.parentEl = $('body');
         }
 
         if (!options.data && el instanceof $) {
@@ -65,13 +71,7 @@
             options.data = data;
         }
 
-        pincushion.view.Cushion({
-            id: options.id, 
-            initialPins: options.data, 
-            parentEl: options.parent,
-            addPinHandler: options.callback
-
-        });
+        pincushion.view.Cushion(options);
 
         // Replace select element with pin cushion
         if (el instanceof $) {
